@@ -1,0 +1,7 @@
+Who are You?
+
+<ul>
+<% @users.each do |u| %>
+    <li><%= link_to u.name, user_path(u) %></li>
+<% end %>
+</ul>

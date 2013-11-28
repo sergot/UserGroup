@@ -1,0 +1,7 @@
+<p>Group, <%= @group.name %></p>
+
+<ul>
+<% @group.users.each do |u| %>
+    <li><%= link_to u.name, user_path(u) %></li>
+<% end %>
+</ul>

@@ -1,0 +1,15 @@
+<%= form_tag do %>
+    Add an user: <select name="uid">
+    <% @users.each do |u| %>
+        <option value="<%= u.id %>"><%= u.name %></option>
+    <% end %>
+    </select>
+
+    to a group: <select name="gid">
+    <% @groups.each do |g| %>
+        <option value="<%= g.id %>"><%= g.name %></option>
+    <% end %>
+    </select><br>
+
+    <%= submit_tag('Add') %>
+<% end %>
