@@ -10,11 +10,6 @@ Description
 Only member of the group can add another user.
 
 
-To run:
-
-    rake db:migrate
-    rails s
-
 * to add a group, go to /groups/new
 * to add an user, go to /users/new
 
