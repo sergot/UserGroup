@@ -30,6 +30,7 @@ class GroupsController < ApplicationController
     end
 
     AuthorizedGroupsAssignment.new(by_user).assigns_groups(user_to_add, groups_to_add)
+
     redirect_to user_path(by_user)
   end
 
@@ -40,45 +41,11 @@ class GroupsController < ApplicationController
     else
       user = User.find(params[:uid])
       group = Group.find(params[:gid])
-      if user and group
+      if user and group and !user.groups.exists?(group)
         user.groups.push(group)
       end
 
       redirect_to users_path
     end
   end
-end
-
-
-class AuthorizedGroupsAssignment
-
-  def initialize(assigner)
-    @assigner = assigner
-  end
-
-  def assigns_groups(assignee, groups)
-    ActiveRecord::Base.transaction do
-      groups.each do |group|
-        assign_group(assignee, group)
-      end
-    end
-  end
-
-  def assign_group(assignee, group)
-    if authorized_assignment?(group) and ensure_unique_assignment(assignee, group)
-      assignee.groups << group
-    end
-  end
-
-
-  private
-
-  def authorized_assignment?(group)
-    @assigner.groups.exists?(group)
-  end
-
-  def ensure_unique_assignment(assignee, group)
-    !assignee.groups.exists?(group)
-  end
-
 end
