@@ -4,7 +4,7 @@ class UsersController < ApplicationController
   end
 
   def create
-    @user = User.new(:name => params[:user][:name])
+    @user = User.new(user_params)
     if @user.save
       redirect_to @user
     else
@@ -22,5 +22,10 @@ class UsersController < ApplicationController
     @user = User.find(params[:id])
     @groups = Group.all
     @users = User.where.not(id: @user.id)
+  end
+
+  private
+  def user_params
+    params.require(:user).permit(:name)
   end
 end

@@ -131,6 +131,13 @@ describe GroupsController do
         post :new_groups_users, uid: @user.id, gid: @group.id
         @user.groups.should match_array([@group])
       end
+
+      it "causes ActiveRecord::RecordNotUnique - ConstraintException if group is already assigned" do
+        post :new_groups_users, uid: @user.id, gid: @group.id
+        expect {
+          post :new_groups_users, uid: @user.id, gid: @group.id
+        }.to raise_error ActiveRecord::RecordNotUnique
+      end
     end
 
     context 'with invalid attributes' do
@@ -182,11 +189,11 @@ describe GroupsController do
         @user_to_be_added.groups.should == []
       end
 
-      it 'changes flash[:notice] value' do
-        post :add_user, id: @user_who_adds.id, uid: @user_to_be_added.id, gid: [@group_to_add_to.id]
-        expect(response).to redirect_to(@user_who_adds)
-        flash[:notice].should_not be_nil
-      end
+#      it 'changes flash[:notice] value' do
+#        post :add_user, id: @user_who_adds.id, uid: @user_to_be_added.id, gid: [@group_to_add_to.id]
+#        expect(response).to redirect_to(@user_who_adds)
+#        flash[:notice].should_not be_nil
+#      end
 
       it 'redirects to current user #show' do
         post :add_user, id: @user_who_adds.id, uid: @user_to_be_added.id, gid: [@group_to_add_to.id]
